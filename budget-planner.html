@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>50/30/20 Budget Planner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 80vw;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .columns {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .column {
+      flex: 1;
+      min-width: 250px;
+      margin: 10px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    .column h2 {
+      text-align: center;
+      color: #444;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 95%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #e9ffe9;
+      border: 1px solid #28a745;
+      border-radius: 4px;
+      font-size: 18px;
+    }
+
+    .summary {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 4px;
+    }
+
+  </style>
+</head>
+
+
+
+
+
+
+<body>
+
+  <div class="container">
+    <h1>50/30/20 Monthly Budget Planner</h1>
+    
+    <form id="budget-form">
+      <!-- Monthly Income Input -->
+      <div style="margin-bottom: 30px;">
+        <label for="income" style="font-weight: bold;">Monthly Income ($):</label>
+        <input type="number" id="income" placeholder="e.g. 4000" style="width: 20%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+      </div>
+
+
+
+      <div class="columns">
+
+        <!-- Needs - 50% -->
+        <div class="column">
+          <h2>Needs (50%)</h2>
+          <label for="rent">Rent/Mortgage ($)</label>
+          <input type="number" id="rent" />
+
+          <label for="car">Car ($)</label>
+          <input type="number" id="car" />
+
+          <label for="food">Food ($)</label>
+          <input type="number" id="food" />
+
+          <label for="utilities">Utilities ($)</label>
+          <input type="number" id="utilities" />
+
+          <label for="loans">Loans ($)</label>
+          <input type="number" id="loans" />
+
+          <label for="healthcare">Healthcare ($)</label>
+          <input type="number" id="healthcare" />
+        </div>
+
+        <!-- Wants - 30% -->
+        <div class="column">
+          <h2>Wants (30%)</h2>
+          <label for="entertainment">Entertainment ($)</label>
+          <input type="number" id="entertainment" />
+
+          <label for="dining">Dining Out ($)</label>
+          <input type="number" id="dining" />
+
+          <label for="shopping">Shopping ($)</label>
+          <input type="number" id="shopping" />
+
+          <label for="hobbies">Hobbies ($)</label>
+          <input type="number" id="hobbies" />
+
+          <label for="phone">Phone ($)</label>
+          <input type="number" id="phone" />
+
+          <label for="subscriptions">Subscriptions ($)</label>
+          <input type="number" id="subscriptions" />
+        </div>
+
+        <!-- Savings - 20% -->
+        <div class="column">
+          <h2>Savings (20%)</h2>
+          <label for="retirement">Retirement ($)</label>
+          <input type="number" id="retirement" />
+
+          <label for="investments">Investments ($)</label>
+          <input type="number" id="investments" />
+
+          <label for="vacation">Vacations ($)</label>
+          <input type="number" id="vacation" />
+
+          <label for="emergency">Emergency Fund ($)</label>
+          <input type="number" id="emergency" />
+
+          <label for="otherSavings">Other Savings ($)</label>
+          <input type="number" id="otherSavings" />
+        </div>
+
+      </div>
+
+      <button type="button" onclick="calculateBudget()">Calculate Budget</button>
+    </form>
+
+    <div class="result" id="result">Total Expenses: $0</div>
+    <div class="summary" id="summary">
+      <div class="columns">
+        <div class="column" id="needs">
+            <h2>Total Needs</h2>
+            <label id="needs_actual"></label>
+            
+        </div>
+        <div class="column" id="wants">
+            <h2>Total Wants</h2>
+            <label id="wants_actual"></label>
+            
+        </div>
+        <div class="column" id="savings">
+            <h2>Total Savings</h2>
+            <label id="savings_actual"></label>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    
+
+    function calculateBudget() {
+      // Needs
+      const rent = parseFloat(document.getElementById('rent').value) || 0;
+      const car = parseFloat(document.getElementById('car').value) || 0;
+      const food = parseFloat(document.getElementById('food').value) || 0;
+      const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+      const loans = parseFloat(document.getElementById('loans').value) || 0;
+      const healthcare = parseFloat(document.getElementById('healthcare').value) || 0;
+      const needsTotal = rent + car + food + utilities + loans + healthcare;
+
+      // Wants
+      const entertainment = parseFloat(document.getElementById('entertainment').value) || 0;
+      const dining = parseFloat(document.getElementById('dining').value) || 0;
+      const shopping = parseFloat(document.getElementById('shopping').value) || 0;
+      const hobbies = parseFloat(document.getElementById('hobbies').value) || 0;
+      const phone = parseFloat(document.getElementById('phone').value) || 0;
+      const subscriptions = parseFloat(document.getElementById('subscriptions').value) || 0;
+      const wantsTotal = entertainment + dining + phone + shopping + subscriptions + hobbies;
+
+      // Savings
+      const investments = parseFloat(document.getElementById('investments').value) || 0;
+      const emergency = parseFloat(document.getElementById('emergency').value) || 0;
+      const retirement = parseFloat(document.getElementById('retirement').value) || 0;
+      const otherSavings = parseFloat(document.getElementById('otherSavings').value) || 0;
+      const vacation = parseFloat(document.getElementById('vacation').value) || 0;
+      const savingsTotal = investments + emergency + retirement + otherSavings + vacation;
+
+      const total = needsTotal + wantsTotal + savingsTotal;
+      const actual_income = document.getElementById('income').value;
+
+      const needsPercent = ((needsTotal / actual_income) * 100).toFixed(1);
+      const wantsPercent = ((wantsTotal / actual_income) * 100).toFixed(1);
+      const savingsPercent = ((savingsTotal / actual_income) * 100).toFixed(1);
+
+      const needswanted = (actual_income * 0.5).toFixed(2);
+      const wantswanted = (actual_income * 0.3).toFixed(2);
+      const savingswanted = (actual_income * 0.2).toFixed(2);
+
+      const needsdiff = (needswanted - needsTotal).toFixed(2);
+      const wantsdiff = (wantswanted - wantsTotal).toFixed(2);
+      const savingsdiff = (savingswanted - savingsTotal).toFixed(2);
+
+      document.getElementById('result').innerText = `Total Monthly Expenses: $${total.toFixed(2)}`;
+      
+      document.getElementById('needs_actual').innerText = `
+      $${needsTotal.toFixed(2)}   (${needsPercent}%)
+
+      
+      Calculated(50%): $${needswanted}
+      Difference: $${needsdiff}
+      `;
+      document.getElementById('wants_actual').innerText = `
+      $${wantsTotal.toFixed(2)}   (${wantsPercent}%)
+
+      
+      Calculated(30%): $${wantswanted}
+      Difference: $${wantsdiff}
+      `;
+      document.getElementById('savings_actual').innerText = `
+      $${savingsTotal.toFixed(2)}   (${savingsPercent}%)
+      
+      Calculated(20%): $${savingswanted}
+      Difference: $${savingsdiff}
+      `;
+    }
+  </script>
+
+</body>
+</html>
